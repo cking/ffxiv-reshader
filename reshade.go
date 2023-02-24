@@ -27,7 +27,7 @@ var reshadeShaders = reshadePackList{
 			default:
 				panic("Unexpected match: " + s)
 			}
-		}, shaders, presets)
+		})
 
 		must(os.Remove(f.Name()))
 	},
@@ -36,7 +36,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "crosire"))
 		must(f.Close())
 		downloadFile("https://github.com/crosire/reshade-shaders/archive/refs/heads/slim.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -44,7 +44,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "sweetfx"))
 		must(f.Close())
 		downloadFile("https://github.com/CeeJayDK/SweetFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -52,7 +52,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "quint"))
 		must(f.Close())
 		downloadFile("https://github.com/martymcmodding/qUINT/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -60,7 +60,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "otisfx"))
 		must(f.Close())
 		downloadFile("https://github.com/FransBouma/OtisFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -68,7 +68,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "astrayfx"))
 		must(f.Close())
 		downloadFile("https://github.com/BlueSkyDefender/AstrayFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -76,7 +76,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "depth3d"))
 		must(f.Close())
 		downloadFile("https://github.com/BlueSkyDefender/Depth3D/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -84,7 +84,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "fubax"))
 		must(f.Close())
 		downloadFile("https://github.com/Fubaxiusz/fubax-shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -92,7 +92,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "daodan"))
 		must(f.Close())
 		downloadFile("https://github.com/Daodan317081/reshade-shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -100,7 +100,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "brussel"))
 		must(f.Close())
 		downloadFile("https://github.com/brussell1/Shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures|Other)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures|Other)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -108,7 +108,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "fxshaders"))
 		must(f.Close())
 		downloadFile("https://github.com/luluco250/FXShaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -116,7 +116,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "prod80"))
 		must(f.Close())
 		downloadFile("https://github.com/prod80/prod80-ReShade-Repository/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -124,7 +124,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "corgifx"))
 		must(f.Close())
 		downloadFile("https://github.com/originalnicodr/CorgiFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -133,7 +133,7 @@ var reshadeShaders = reshadePackList{
 			f := expect(os.CreateTemp("", "MLUT"))
 			must(f.Close())
 			downloadFile("https://github.com/TheGordinho/MLUT/archive/refs/heads/master.zip", f.Name())
-			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s))  + "/" }, shaders, presets)
 			must(os.Remove(f.Name()))
 		},
 	*/
@@ -142,7 +142,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "insane"))
 		must(f.Close())
 		downloadFile("https://github.com/LordOfLunacy/Insane-Shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -150,7 +150,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "retro"))
 		must(f.Close())
 		downloadFile("https://github.com/Matsilagi/RSRetroArch/archive/refs/heads/main.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -158,7 +158,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "kosrud"))
 		must(f.Close())
 		downloadFile("https://github.com/KosRud/Shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/reshade/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/reshade/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(shiftPath(s))) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -166,7 +166,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "cobrafx"))
 		must(f.Close())
 		downloadFile("https://github.com/LordKobra/CobraFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -174,7 +174,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "warpfx"))
 		must(f.Close())
 		downloadFile("https://github.com/Radegast-FFXIV/Warp-FX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -185,10 +185,10 @@ var reshadeShaders = reshadePackList{
 		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures|Presets)/`), func(s string) string {
 			s = shiftPath(s)
 			if strings.HasPrefix(s, "Presets") {
-				return path.Join(presets, s[len("Presets/"):])
+				return path.Join(presets, s[len("Presets/"):]) + "/"
 			}
-			return path.Join(shaders, s)
-		}, shaders, presets)
+			return path.Join(shaders, s) + "/"
+		})
 		must(os.Remove(f.Name()))
 	},
 
@@ -196,7 +196,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "dh"))
 		must(f.Close())
 		downloadFile("https://github.com/AlucardDH/dh-reshade-shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -204,7 +204,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "fasteffects"))
 		must(f.Close())
 		downloadFile("https://github.com/rj200/Glamarye_Fast_Effects_for_ReShade/archive/refs/heads/main.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
 		must(os.Remove(f.Name()))
 	},
 
@@ -212,7 +212,7 @@ var reshadeShaders = reshadePackList{
 		f := expect(os.CreateTemp("", "pirate-shaders"))
 		must(f.Close())
 		downloadFile("https://github.com/Heathen/Pirate-Shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/reshade-`), func(s string) string { return s }, shaders, presets)
+		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/reshade-shaders/`), func(s string) string { return shaders + "/" })
 		must(os.Remove(f.Name()))
 	},
 }
@@ -225,7 +225,7 @@ func log(format string, args ...interface{}) {
 	fmt.Printf(format, args...)
 }
 
-func extractPack(fileName string, re *regexp.Regexp, replace func(s string) string, shaders, presets string) {
+func extractPack(fileName string, re *regexp.Regexp, replace func(s string) string) {
 	reader := expect(zip.OpenReader(fileName))
 	for _, file := range reader.File {
 		dest := file.Name

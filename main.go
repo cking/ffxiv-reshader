@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"strings"
 )
 
 func getZipOffset(buffer []byte) int {
@@ -41,5 +42,32 @@ func main() {
 
 	println("Downloading ReShade presets and shaders...")
 	downloadShadersAndPresets(path.Join(gamePath, "reshade-shaders"), path.Join(gamePath, "reshade-presets"))
+
+	println("Configuring ReShade...")
+	configureReShade(path.Join(gamePath, "ReShade.ini"))
+
 	println("Done, enjoy!")
+}
+
+func configureReShade(iniFile string) {
+	if _, err := os.Stat(iniFile); os.IsExist(err) {
+		println("ReShade already configured")
+		return
+	}
+
+	ini := expect(os.OpenFile(iniFile, os.O_CREATE|os.O_WRONLY, 0644))
+
+	expect(ini.WriteString("[GENERAL]\n"))
+
+	paths := []string{"reshade-shaders"}
+	paths = append(paths, "reshade-shaders\\Shaders")
+	paths = append(paths, "reshade-shaders\\ComputeShaders")
+	pathList := strings.Join(paths, ",")
+	expect(ini.WriteString("EffectSearchPaths=" + pathList + "\n"))
+
+	expect(ini.WriteString("TextureSearchPaths=.\\reshade-shaders\\Textures\n"))
+
+	// s := strings.Join([]string{"a", "b"}, ",")
+
+	must(ini.Close())
 }
