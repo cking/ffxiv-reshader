@@ -38,4 +38,8 @@ func main() {
 	}
 
 	fmt.Printf("ReShade version [%v] installed\n", reshadeVersion)
+
+	println("Downloading ReShade presets and shaders...")
+	downloadShadersAndPresets(path.Join(gamePath, "reshade-shaders"), path.Join(gamePath, "reshade-presets"))
+	println("Done, enjoy!")
 }

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"github.com/schollz/progressbar/v3"
 	"io"
 	"net/http"
+	"os"
 )
 
 func must(err error) {
@@ -24,9 +27,25 @@ func arg(args []string, i int) string {
 }
 
 func download(url string) []byte {
-	resp := expect(http.Get(url))
-	body := expect(io.ReadAll(resp.Body))
+	resp := fetch(url)
+	println(resp.Status)
+	bar := progressbar.DefaultBytes(resp.ContentLength)
+	buffer := new(bytes.Buffer)
+	expect(io.Copy(io.MultiWriter(buffer, bar), resp.Body))
 	must(resp.Body.Close())
 
-	return body
+	return buffer.Bytes()
+}
+
+func downloadFile(url, path string) {
+	buffer := download(url)
+	file := expect(os.Create(path))
+	expect(file.Write(buffer))
+	must(file.Close())
+}
+
+func fetch(url string) *http.Response {
+	req := expect(http.NewRequest("GET", url, nil))
+	req.Header.Set("User-Agent", "ffxiv-reshader/1")
+	return expect(http.DefaultClient.Do(req))
 }
