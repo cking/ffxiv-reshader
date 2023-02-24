@@ -13,6 +13,7 @@ import (
 type reshadePackList map[string]func(shaders, presets string)
 
 var reshadeShaders = reshadePackList{
+	// WinUaeMaskGlow
 	"gshadesucks": func(shaders, presets string) {
 		f := expect(os.CreateTemp("", "gshadesucks"))
 		must(f.Close())
@@ -28,6 +29,11 @@ var reshadeShaders = reshadePackList{
 				panic("Unexpected match: " + s)
 			}
 		})
+
+		// fixing compiling by removing 3 files
+		must(os.Remove(path.Join(shaders, "Shaders", "WinUaeMaskGlow.fx")))
+		must(os.Remove(path.Join(shaders, "Shaders", "NLM_Sharp.fx")))
+		must(os.Remove(path.Join(shaders, "Shaders", "SmartDeNoise.fx")))
 
 		must(os.Remove(f.Name()))
 	},
@@ -64,13 +70,19 @@ var reshadeShaders = reshadePackList{
 		must(os.Remove(f.Name()))
 	},
 
-	"AstrayFX": func(shaders, presets string) {
-		f := expect(os.CreateTemp("", "astrayfx"))
-		must(f.Close())
-		downloadFile("https://github.com/BlueSkyDefender/AstrayFX/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
-		must(os.Remove(f.Name()))
-	},
+	/*
+		Broken with reshade:
+			- Flair
+			- RadiantGI
+
+		"AstrayFX": func(shaders, presets string) {
+			f := expect(os.CreateTemp("", "astrayfx"))
+			must(f.Close())
+			downloadFile("https://github.com/BlueSkyDefender/AstrayFX/archive/refs/heads/master.zip", f.Name())
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
+			must(os.Remove(f.Name()))
+		},
+	*/
 
 	"Depth3D": func(shaders, presets string) {
 		f := expect(os.CreateTemp("", "depth3d"))
@@ -104,13 +116,20 @@ var reshadeShaders = reshadePackList{
 		must(os.Remove(f.Name()))
 	},
 
-	"FXShaders": func(shaders, presets string) {
-		f := expect(os.CreateTemp("", "fxshaders"))
-		must(f.Close())
-		downloadFile("https://github.com/luluco250/FXShaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
-		must(os.Remove(f.Name()))
-	},
+	/*
+		Broken with reshade:
+			- AspectRatioSuite
+			- GloomAO
+			- GrainSpread
+
+		"FXShaders": func(shaders, presets string) {
+			f := expect(os.CreateTemp("", "fxshaders"))
+			must(f.Close())
+			downloadFile("https://github.com/luluco250/FXShaders/archive/refs/heads/master.zip", f.Name())
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
+			must(os.Remove(f.Name()))
+		},
+	*/
 
 	"prod80": func(shaders, presets string) {
 		f := expect(os.CreateTemp("", "prod80"))
@@ -129,6 +148,8 @@ var reshadeShaders = reshadePackList{
 	},
 
 	/*
+		1.3 GB :(
+
 		"MLUT": func(shaders, presets string) {
 			f := expect(os.CreateTemp("", "MLUT"))
 			must(f.Close())
@@ -146,13 +167,19 @@ var reshadeShaders = reshadePackList{
 		must(os.Remove(f.Name()))
 	},
 
-	"RSRetroArch": func(shaders, presets string) {
-		f := expect(os.CreateTemp("", "retro"))
-		must(f.Close())
-		downloadFile("https://github.com/Matsilagi/RSRetroArch/archive/refs/heads/main.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
-		must(os.Remove(f.Name()))
-	},
+	/*
+		Broken with reshade:
+			- NTSC_XOT
+			- NTSCCustom
+
+		"RSRetroArch": func(shaders, presets string) {
+			f := expect(os.CreateTemp("", "retro"))
+			must(f.Close())
+			downloadFile("https://github.com/Matsilagi/RSRetroArch/archive/refs/heads/main.zip", f.Name())
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
+			must(os.Remove(f.Name()))
+		},
+	*/
 
 	"KosRud/Shaders": func(shaders, presets string) {
 		f := expect(os.CreateTemp("", "kosrud"))
@@ -178,27 +205,37 @@ var reshadeShaders = reshadePackList{
 		must(os.Remove(f.Name()))
 	},
 
-	"VRToolKit": func(shaders, presets string) {
-		f := expect(os.CreateTemp("", "vr"))
-		must(f.Close())
-		downloadFile("https://github.com/retroluxfilm/reshade-vrtoolkit/archive/refs/heads/main.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures|Presets)/`), func(s string) string {
-			s = shiftPath(s)
-			if strings.HasPrefix(s, "Presets") {
-				return path.Join(presets, s[len("Presets/"):]) + "/"
-			}
-			return path.Join(shaders, s) + "/"
-		})
-		must(os.Remove(f.Name()))
-	},
+	/*
+		Broken with reshade:
+			- VRToolkit
 
-	"DH": func(shaders, presets string) {
-		f := expect(os.CreateTemp("", "dh"))
-		must(f.Close())
-		downloadFile("https://github.com/AlucardDH/dh-reshade-shaders/archive/refs/heads/master.zip", f.Name())
-		extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
-		must(os.Remove(f.Name()))
-	},
+		"VRToolKit": func(shaders, presets string) {
+			f := expect(os.CreateTemp("", "vr"))
+			must(f.Close())
+			downloadFile("https://github.com/retroluxfilm/reshade-vrtoolkit/archive/refs/heads/main.zip", f.Name())
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures|Presets)/`), func(s string) string {
+				s = shiftPath(s)
+				if strings.HasPrefix(s, "Presets") {
+					return path.Join(presets, s[len("Presets/"):]) + "/"
+				}
+				return path.Join(shaders, s) + "/"
+			})
+			must(os.Remove(f.Name()))
+		},
+	*/
+
+	/*
+		Broken with reshade:
+			- dh_Lain
+
+		"DH": func(shaders, presets string) {
+			f := expect(os.CreateTemp("", "dh"))
+			must(f.Close())
+			downloadFile("https://github.com/AlucardDH/dh-reshade-shaders/archive/refs/heads/master.zip", f.Name())
+			extractPack(f.Name(), regexp.MustCompile(`^[^/]+/(Shaders|Textures)/`), func(s string) string { return path.Join(shaders, shiftPath(s)) + "/" })
+			must(os.Remove(f.Name()))
+		},
+	*/
 
 	"FastEffects": func(shaders, presets string) {
 		f := expect(os.CreateTemp("", "fasteffects"))
