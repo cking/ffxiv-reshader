@@ -1,5 +1,11 @@
 package main
 
+import (
+	"os/exec"
+	"path"
+	"strings"
+)
+
 func run(name string, args ...string) string {
 	cmd := exec.Command(name, args...)
 	return string(expect(cmd.CombinedOutput()))
